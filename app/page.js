@@ -89,44 +89,57 @@ const ShuttlePage = () => {
   }, []);
 
   return (
-    <><div className="container mx-auto mt-8 px-4 sm:px-0">
-      <h1 className="text-2xl font-bold mb-4">APU Shuttle Timings</h1>
-      <div className="flex flex-col gap-4">
-        <div className="bg-gray-200 p-4 rounded-lg">
-          <h3 className="text-lg font-semibold mb-2">
-            Sarjapura Police Station to Campus
-          </h3>
-          {nextIncoming ? (
-            <div>
-              <p>Scheduled arrival time: {formatTime(nextIncoming)}</p>
-              <p>
-                Time left: {timeLeftIncoming.hours} hours and{" "}
-                {timeLeftIncoming.minutes} minutes
-              </p>
-            </div>
-          ) : (
-            <p>No upcoming incoming shuttle</p>
-          )}
-        </div>
-        <div className="bg-gray-200 p-4 rounded-lg">
-          <h3 className="text-lg font-semibold mb-2">
-            Campus to Sarjapura Police Station
-          </h3>
-          {nextOutgoing ? (
-            <div>
-              <p>Scheduled departure time: {formatTime(nextOutgoing)}</p>
-              <p>
-                Time left: {timeLeftOutgoing.hours} hours and{" "}
-                {timeLeftOutgoing.minutes} minutes
-              </p>
-            </div>
-          ) : (
-            <p>No upcoming or outgoing shuttle</p>
-          )}
+    <>
+      <div className="container mx-auto mt-8 px-4 sm:px-0">
+        <h1 className="text-2xl font-bold mb-4">APU Shuttle Timings</h1>
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-200 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold mb-2">
+              Sarjapura Police Station to Campus
+            </h3>
+            {nextIncoming ? (
+              <div>
+                <p>Scheduled arrival time: {formatTime(nextIncoming)}</p>
+                <p>
+                  Time left: {timeLeftIncoming.hours} hours and{" "}
+                  {timeLeftIncoming.minutes} minutes
+                </p>
+              </div>
+            ) : (
+              <p>No upcoming incoming shuttle</p>
+            )}
+          </div>
+          <div className="bg-gray-200 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold mb-2">
+              Campus to Sarjapura Police Station
+            </h3>
+            {nextOutgoing ? (
+              <div>
+                <p>Scheduled departure time: {formatTime(nextOutgoing)}</p>
+                <p>
+                  Time left: {timeLeftOutgoing.hours} hours and{" "}
+                  {timeLeftOutgoing.minutes} minutes
+                </p>
+              </div>
+            ) : (
+              <p>No upcoming or outgoing shuttle</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-    <div> Made with love by Jayesh </div></>
+      <div className="text-sm text-gray-600 mt-8 px-4 sm:px-0">
+        <p className="font-semibold">Developed by Jayesh</p>
+        <p className="mt-2">
+          You can check out the code at the{" "}
+          <a
+            href="https://github.com/Jayesh-kahnani/APU-Shuttle"
+            className="text-blue-500 hover:underline"
+          >
+            github repository
+          </a>. 
+        </p>
+      </div>
+    </>
   );
 };
 
