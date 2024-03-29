@@ -89,7 +89,7 @@ const ShuttlePage = () => {
   }, []);
 
   return (
-    <div className="container mx-auto mt-8 px-4 sm:px-0">
+    <><div className="container mx-auto mt-8 px-4 sm:px-0">
       <h1 className="text-2xl font-bold mb-4">APU Shuttle Timings</h1>
       <div className="flex flex-col gap-4">
         <div className="bg-gray-200 p-4 rounded-lg">
@@ -126,6 +126,7 @@ const ShuttlePage = () => {
         </div>
       </div>
     </div>
+    <div> Made with love by Jayesh </div></>
   );
 };
 
