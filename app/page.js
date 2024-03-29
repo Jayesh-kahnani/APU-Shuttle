@@ -150,7 +150,7 @@ const ShuttlePage = () => {
           >
             github repository
           </a>. <br />
-          <strong>Note</strong>: The timings refresh after every minute.
+          <strong>Note</strong>: The timings auto-refresh after every minute.
         </p><hr></hr>
       </div>
     </>
