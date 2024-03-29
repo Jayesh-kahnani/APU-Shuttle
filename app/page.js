@@ -34,59 +34,72 @@ const ShuttlePage = () => {
   });
 
   useEffect(() => {
-    const currentDate = new Date();
-    const currentDay = currentDate.getDay();
-    const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes(); 
+    const fetchData = () => {
+      const currentDate = new Date();
+      const currentDay = currentDate.getDay();
+      const currentTime =
+        currentDate.getHours() * 60 + currentDate.getMinutes();
 
-    let outgoingSchedule, incomingSchedule;
+      let outgoingSchedule, incomingSchedule;
 
-    if (currentDay === 0 || currentDay === 6) {
-      outgoingSchedule = weekendOutgoing;
-      incomingSchedule = weekendIncoming;
-    } else {
-      outgoingSchedule = weekdayOutgoing;
-      incomingSchedule = weekdayIncoming;
-    }
-
-    let nextOutgoingTime = null;
-    let nextIncomingTime = null;
-
-    outgoingSchedule.forEach((time) => {
-      if (time > currentTime && !nextOutgoingTime) {
-        nextOutgoingTime = time;
+      if (currentDay === 0 || currentDay === 6) {
+        outgoingSchedule = weekendOutgoing;
+        incomingSchedule = weekendIncoming;
+      } else {
+        outgoingSchedule = weekdayOutgoing;
+        incomingSchedule = weekdayIncoming;
       }
-    });
 
-    incomingSchedule.forEach((time) => {
-      if (time > currentTime && !nextIncomingTime) {
-        nextIncomingTime = time;
+      let nextOutgoingTime = null;
+      let nextIncomingTime = null;
+
+      outgoingSchedule.forEach((time) => {
+        if (time > currentTime && !nextOutgoingTime) {
+          nextOutgoingTime = time;
+        }
+      });
+
+      incomingSchedule.forEach((time) => {
+        if (time > currentTime && !nextIncomingTime) {
+          nextIncomingTime = time;
+        }
+      });
+
+      if (nextOutgoingTime) {
+        setNextOutgoing(nextOutgoingTime);
+        const hoursLeftOutgoing = Math.floor(
+          (nextOutgoingTime - currentTime) / 60
+        );
+        const minutesLeftOutgoing = (nextOutgoingTime - currentTime) % 60;
+        setTimeLeftOutgoing({
+          hours: hoursLeftOutgoing,
+          minutes: minutesLeftOutgoing,
+        });
       }
-    });
 
-    if (nextOutgoingTime) {
-      setNextOutgoing(nextOutgoingTime);
-      const hoursLeftOutgoing = Math.floor(
-        (nextOutgoingTime - currentTime) / 60
-      );
-      const minutesLeftOutgoing = (nextOutgoingTime - currentTime) % 60;
-      setTimeLeftOutgoing({
-        hours: hoursLeftOutgoing,
-        minutes: minutesLeftOutgoing,
-      });
-    }
+      if (nextIncomingTime) {
+        setNextIncoming(nextIncomingTime);
+        const hoursLeftIncoming = Math.floor(
+          (nextIncomingTime - currentTime) / 60
+        );
+        const minutesLeftIncoming = (nextIncomingTime - currentTime) % 60;
+        setTimeLeftIncoming({
+          hours: hoursLeftIncoming,
+          minutes: minutesLeftIncoming,
+        });
+      }
+    };
 
-    if (nextIncomingTime) {
-      setNextIncoming(nextIncomingTime);
-      const hoursLeftIncoming = Math.floor(
-        (nextIncomingTime - currentTime) / 60
-      );
-      const minutesLeftIncoming = (nextIncomingTime - currentTime) % 60;
-      setTimeLeftIncoming({
-        hours: hoursLeftIncoming,
-        minutes: minutesLeftIncoming,
-      });
-    }
+    // Fetch data initially
+    fetchData();
+
+    // Refresh data every minute
+    const interval = setInterval(fetchData, 60000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(interval);
   }, []);
+
 
   return (
     <>
@@ -136,8 +149,9 @@ const ShuttlePage = () => {
             className="text-blue-500 hover:underline"
           >
             github repository
-          </a>. 
-        </p>
+          </a>. <br />
+          <strong>Note</strong>: The timings refresh after every minute.
+        </p><hr></hr>
       </div>
     </>
   );
