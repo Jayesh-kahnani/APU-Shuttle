@@ -1,113 +1,138 @@
-import Image from "next/image";
+"use client"
+import React, { useState, useEffect } from "react";
 
-export default function Home() {
+const ShuttlePage = () => {
+
+  const weekdayOutgoing = [
+    440, 455, 470, 485, 500, 515, 530, 545, 580, 605, 645, 840, 885, 960, 990,
+    1020, 1035, 1050, 1065, 1080, 1095, 1110, 1140, 1170, 1195, 1215, 1245,
+    1275, 1290, 1320,
+  ];
+  const weekdayIncoming = [
+    435, 450, 465, 480, 495, 510, 525, 540, 575, 600, 630, 705, 855, 900, 975,
+    1015, 1025, 1050, 1065, 1080, 1095, 1115, 1145, 1175, 1200, 1225, 1260,
+    1285, 1305,
+  ];
+  const weekendOutgoing = [
+    455, 485, 515, 545, 795, 885, 960, 990, 1020, 1050, 1080, 1140, 1200, 1260,
+    1320,
+  ];
+  const weekendIncoming = [
+    450, 480, 510, 540, 600, 855, 900, 975, 1065, 1095, 1125, 1155, 1215, 1170,
+    1260, 1350, 1410, 1515, 1575, 1635, 1695, 1755, 1815, 1935, 2010, 2070,
+    2130, 2190,
+  ];
+  const [nextOutgoing, setNextOutgoing] = useState(null);
+  const [nextIncoming, setNextIncoming] = useState(null);
+  const [timeLeftOutgoing, setTimeLeftOutgoing] = useState({
+    hours: 0,
+    minutes: 0,
+  });
+  const [timeLeftIncoming, setTimeLeftIncoming] = useState({
+    hours: 0,
+    minutes: 0,
+  });
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes(); 
+
+    let outgoingSchedule, incomingSchedule;
+
+    if (currentDay === 0 || currentDay === 6) {
+      outgoingSchedule = weekendOutgoing;
+      incomingSchedule = weekendIncoming;
+    } else {
+      outgoingSchedule = weekdayOutgoing;
+      incomingSchedule = weekdayIncoming;
+    }
+
+    let nextOutgoingTime = null;
+    let nextIncomingTime = null;
+
+    outgoingSchedule.forEach((time) => {
+      if (time > currentTime && !nextOutgoingTime) {
+        nextOutgoingTime = time;
+      }
+    });
+
+    incomingSchedule.forEach((time) => {
+      if (time > currentTime && !nextIncomingTime) {
+        nextIncomingTime = time;
+      }
+    });
+
+    if (nextOutgoingTime) {
+      setNextOutgoing(nextOutgoingTime);
+      const hoursLeftOutgoing = Math.floor(
+        (nextOutgoingTime - currentTime) / 60
+      );
+      const minutesLeftOutgoing = (nextOutgoingTime - currentTime) % 60;
+      setTimeLeftOutgoing({
+        hours: hoursLeftOutgoing,
+        minutes: minutesLeftOutgoing,
+      });
+    }
+
+    if (nextIncomingTime) {
+      setNextIncoming(nextIncomingTime);
+      const hoursLeftIncoming = Math.floor(
+        (nextIncomingTime - currentTime) / 60
+      );
+      const minutesLeftIncoming = (nextIncomingTime - currentTime) % 60;
+      setTimeLeftIncoming({
+        hours: hoursLeftIncoming,
+        minutes: minutesLeftIncoming,
+      });
+    }
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="container mx-auto mt-8 px-4 sm:px-0">
+      <h1 className="text-2xl font-bold mb-4">APU Shuttle Timings</h1>
+      <div className="flex flex-col gap-4">
+        <div className="bg-gray-200 p-4 rounded-lg">
+          <h3 className="text-lg font-semibold mb-2">
+            Sarjapura Police Station to Campus
+          </h3>
+          {nextIncoming ? (
+            <div>
+              <p>Scheduled arrival time: {formatTime(nextIncoming)}</p>
+              <p>
+                Time left: {timeLeftIncoming.hours} hours and{" "}
+                {timeLeftIncoming.minutes} minutes
+              </p>
+            </div>
+          ) : (
+            <p>No upcoming incoming shuttle</p>
+          )}
+        </div>
+        <div className="bg-gray-200 p-4 rounded-lg">
+          <h3 className="text-lg font-semibold mb-2">
+            Campus to Sarjapura Police Station
+          </h3>
+          {nextOutgoing ? (
+            <div>
+              <p>Scheduled departure time: {formatTime(nextOutgoing)}</p>
+              <p>
+                Time left: {timeLeftOutgoing.hours} hours and{" "}
+                {timeLeftOutgoing.minutes} minutes
+              </p>
+            </div>
+          ) : (
+            <p>No upcoming or outgoing shuttle</p>
+          )}
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
-}
+};
+
+const formatTime = (timeInMinutes) => {
+  const hours = Math.floor(timeInMinutes / 60);
+  const minutes = timeInMinutes % 60;
+  return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
+};
+
+export default ShuttlePage;
