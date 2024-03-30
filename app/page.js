@@ -1,6 +1,8 @@
 "use client"
 import React, { useState, useEffect } from "react";
 
+// outgoing = campus to station
+// incoming = station to campus
 const ShuttlePage = () => {
 
   const weekdayOutgoing = [
@@ -18,10 +20,27 @@ const ShuttlePage = () => {
     1320,
   ];
   const weekendIncoming = [
-    450, 480, 510, 540, 600, 855, 900, 975, 1065, 1095, 1125, 1155, 1215, 1170,
-    1260, 1350, 1410, 1515, 1575, 1635, 1695, 1755, 1815, 1935, 2010, 2070,
-    2130, 2190,
+    450, 480, 510, 540, 600, 855, 900, 975, 1005, 1035, 1065, 1095, 1155, 1230,
+    1290,
   ];
+  // weekend incoming
+  // 7: 30am
+// 8:00am
+// 8:30
+// 9am
+// 10am
+// 14:15
+// 15:00
+// 16:15
+// 16:45
+// 17:15
+// 17:45
+// 18:15
+// 19:15
+// 20:30
+// 21:30
+
+
   const [nextOutgoing, setNextOutgoing] = useState(null);
   const [nextIncoming, setNextIncoming] = useState(null);
   const [timeLeftOutgoing, setTimeLeftOutgoing] = useState({
