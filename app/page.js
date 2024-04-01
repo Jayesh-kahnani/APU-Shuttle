@@ -1,10 +1,9 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 
 // outgoing = campus to station
 // incoming = station to campus
 const ShuttlePage = () => {
-
   const weekdayOutgoing = [
     440, 455, 470, 485, 500, 515, 530, 545, 580, 605, 645, 840, 885, 960, 990,
     1020, 1035, 1050, 1065, 1080, 1095, 1110, 1140, 1170, 1195, 1215, 1245,
@@ -23,23 +22,6 @@ const ShuttlePage = () => {
     450, 480, 510, 540, 600, 855, 900, 975, 1005, 1035, 1065, 1095, 1155, 1230,
     1290,
   ];
-  // weekend incoming
-  // 7: 30am
-// 8:00am
-// 8:30
-// 9am
-// 10am
-// 14:15
-// 15:00
-// 16:15
-// 16:45
-// 17:15
-// 17:45
-// 18:15
-// 19:15
-// 20:30
-// 21:30
-
 
   const [nextOutgoing, setNextOutgoing] = useState(null);
   const [nextIncoming, setNextIncoming] = useState(null);
@@ -119,7 +101,6 @@ const ShuttlePage = () => {
     return () => clearInterval(interval);
   }, []);
 
-
   return (
     <>
       <div className="container mx-auto mt-8 px-4 sm:px-0">
@@ -159,18 +140,34 @@ const ShuttlePage = () => {
           </div>
         </div>
       </div>
-      <div className="text-sm text-gray-600 mt-8 px-4 sm:px-0">
-        <p className="font-semibold">Developed by Jayesh</p>
-        <p className="mt-2">
-          You can check out the code at the{" "}
-          <a
-            href="https://github.com/Jayesh-kahnani/APU-Shuttle"
-            className="text-blue-500 hover:underline"
-          >
-            github repository
-          </a>. <br />
-          <strong>Note</strong>: The timings auto-refresh after every minute.
-        </p><hr></hr>
+      <div className="bg-gray-100 mt-8 py-4 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-sm text-gray-700 font-semibold">
+            Developed by Jayesh
+          </p>
+          <p className="text-sm text-gray-700 mt-2">
+            You can check out the code at the{" "}
+            <a
+              href="https://github.com/Jayesh-kahnani/APU-Shuttle"
+              className="text-blue-500 hover:underline"
+            >
+              github repository
+            </a>
+            . <br />
+            <strong>Note</strong>: The timings auto-refresh after every minute.
+          </p>
+          <hr className="my-4 border-gray-300" />
+          <p className="text-sm text-gray-700">
+            In case of bugs or timing-changes, please reach out to me at{" "}
+            <a
+              href="mailto:jayesh.kahnani23_ug@apu.edu.in"
+              className="text-blue-500 hover:underline"
+            >
+              jayesh.kahnani23_ug@apu.edu.in
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </>
   );
