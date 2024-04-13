@@ -1,9 +1,12 @@
 "use client";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 // outgoing = campus to station
 // incoming = station to campus
 const ShuttlePage = () => {
+    const [showNote, setShowNote] = useState(true);
+
   const weekdayOutgoing = [
     440, 455, 470, 485, 500, 515, 530, 545, 580, 605, 645, 840, 885, 960, 990,
     1020, 1035, 1050, 1065, 1080, 1095, 1110, 1140, 1170, 1195, 1215, 1245,
@@ -140,35 +143,62 @@ const ShuttlePage = () => {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 mt-8 py-4 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-sm text-gray-700 font-semibold">
-            Developed by Jayesh
-          </p>
-          <p className="text-sm text-gray-700 mt-2">
-            You can check out the code at the{" "}
-            <a
-              href="https://github.com/Jayesh-kahnani/APU-Shuttle"
-              className="text-blue-500 hover:underline"
+
+      <div className="container mx-auto mt-6 px-4 sm:px-0">
+        <div className="bg-gray-100 py-3 px-4 rounded-lg shadow-sm">
+          <h2 className="text-lg font-bold mb-2">Planning for the Future?</h2>
+          <p className="text-sm text-gray-800 ">
+            <Link
+              href="/schedule"
+              className="hover:underline text-blue-500"
             >
-              github repository
-            </a>
-            . <br />
-            <strong>Note</strong>: The timings auto-refresh after every minute.
-          </p>
-          <hr className="my-4 border-gray-300" />
-          <p className="text-sm text-gray-700">
-            In case of bugs or timing-changes, please reach out to me at{" "}
-            <a
-              href="mailto:jayesh.kahnani23_ug@apu.edu.in"
-              className="text-blue-500 hover:underline"
-            >
-              jayesh.kahnani23_ug@apu.edu.in
-            </a>
-            .
+              Check Out the Full Shuttle Schedule
+            </Link>
           </p>
         </div>
       </div>
+
+      {showNote && (
+        <div className="bg-gray-100 mt-8 py-4 px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-sm text-gray-700 font-semibold">
+                Developed by Jayesh
+              </p>
+              <button
+                onClick={() => setShowNote(false)}
+                className="text-gray-600 hover:text-gray-800 focus:outline-none"
+              >
+                &#x2715; {/* Close icon */}
+              </button>
+            </div>
+            {/* Rest of the note */}
+            <p className="text-sm text-gray-700 mt-2">
+              You can check out the code at the{" "}
+              <a
+                href="https://github.com/Jayesh-kahnani/APU-Shuttle"
+                className="text-blue-500 hover:underline"
+              >
+                github repository
+              </a>
+              . <br />
+              <strong>Note</strong>: The timings auto-refresh after every
+              minute.
+            </p>
+            <hr className="my-4 border-gray-300" />
+            <p className="text-sm text-gray-700">
+              In case of bugs or timing-changes, please reach out to me at{" "}
+              <a
+                href="mailto:jayesh.kahnani23_ug@apu.edu.in"
+                className="text-blue-500 hover:underline"
+              >
+                jayesh.kahnani23_ug@apu.edu.in
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 };
