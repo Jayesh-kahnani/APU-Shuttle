@@ -9,9 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "firebase": "^10.13.0",
+    "flowbite": "^2.5.1",
+    "framer-motion": "^11.3.30",
     "next": "14.1.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-responsive-carousel": "^3.2.23",
+    "react-slick": "^0.30.2",
+    "react-swipeable": "^7.0.1",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^11.1.10"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
