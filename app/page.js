@@ -9,53 +9,50 @@ const ShuttlePage = () => {
   const [incomingTimings, setIncomingTimings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showNote, setShowNote] = useState(true);
+useEffect(() => {
+  const fetchData = async () => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const currentDate = new Date();
-      const currentDay = currentDate.getDay();
-      const currentTime =
-        currentDate.getHours() * 60 + currentDate.getMinutes();
+    let outgoingSchedule = [];
+    let incomingSchedule = [];
 
-      let outgoingSchedule = [];
-      let incomingSchedule = [];
+    const dayType =
+      currentDay === 0 || currentDay === 6 ? "weekend" : "weekday";
 
-      const dayType =
-        currentDay === 0 || currentDay === 6 ? "weekend" : "weekday";
-
-      try {
-        setLoading(true);
-        const scheduleDoc = await getDoc(doc(db, "shuttleTimings", dayType));
-        if (scheduleDoc.exists()) {
-          outgoingSchedule = scheduleDoc
-            .data()
-            .outgoing.filter((time) => time > currentTime);
-          incomingSchedule = scheduleDoc
-            .data()
-            .incoming.filter((time) => time > currentTime);
-        } else {
-          console.log("No such document!");
-        }
-      } catch (error) {
-        console.error("Error fetching shuttle timings: ", error);
-      } finally {
-        setLoading(false);
+    try {
+      setLoading(true);
+      const scheduleDoc = await getDoc(doc(db, "shuttleTimings", dayType));
+      if (scheduleDoc.exists()) {
+        outgoingSchedule = scheduleDoc
+          .data()
+          .outgoing.filter((time) => time > currentTime);
+        incomingSchedule = scheduleDoc
+          .data()
+          .incoming.filter((time) => time > currentTime);
+      } else {
+        console.log("No such document!");
       }
+    } catch (error) {
+      console.error("Error fetching shuttle timings: ", error);
+    } finally {
+      setLoading(false);
+    }
 
-      // Sort timings in ascending order
-      outgoingSchedule.sort((a, b) => a - b);
-      incomingSchedule.sort((a, b) => a - b);
+    outgoingSchedule.sort((a, b) => a - b);
+    incomingSchedule.sort((a, b) => a - b);
 
-      setOutgoingTimings(outgoingSchedule);
-      setIncomingTimings(incomingSchedule);
-    };
+    setOutgoingTimings(outgoingSchedule);
+    setIncomingTimings(incomingSchedule);
+  };
 
-    fetchData();
+  fetchData();
 
-    const interval = setInterval(fetchData, 60000);
+  const interval = setInterval(fetchData, 30000);
 
-    return () => clearInterval(interval);
-  }, []);
+  return () => clearInterval(interval);
+}, []);
 
   const formatTime = (timeInMinutes) => {
     const hours = Math.floor(timeInMinutes / 60);
@@ -92,7 +89,7 @@ const ShuttlePage = () => {
     arrows: false,
     dots: false,
     infinite: false,
-    slidesToShow: 1, // Adjust as needed
+    slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: 0,
     responsive: [
@@ -200,10 +197,10 @@ const ShuttlePage = () => {
                 onClick={() => setShowNote(false)}
                 className="text-gray-400 hover:text-gray-200 focus:outline-none"
               >
-                &#x2715; {/* Close icon */}
+                &#x2715; 
               </button>
             </div>
-            {/* Rest of the note */}
+
             <p className="text-sm mt-2">
               You can check out the code at the{" "}
               <a
