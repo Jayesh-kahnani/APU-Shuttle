@@ -217,7 +217,7 @@ useEffect(() => {
               shuttle.
                               <br /> 
                                             <strong>Also</strong>: <a
-                href="apu-shuttle.vercel.app/schedule"
+                href="https://apu-shuttle.vercel.app/schedule"
                 className="text-blue-400 hover:underline"
               >
                 View Full Schedule
