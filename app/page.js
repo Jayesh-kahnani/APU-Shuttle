@@ -216,7 +216,7 @@ useEffect(() => {
               <strong>Also</strong>: Swipe the timings to see the next
               shuttle.
                               <br /> 
-                              <a
+                                            <strong>Also</strong>: <a
                 href="apu-shuttle.vercel.app/schedule"
                 className="text-blue-400 hover:underline"
               >
